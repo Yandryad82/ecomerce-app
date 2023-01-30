@@ -58,7 +58,7 @@ function AppNavBar() {
                   Purchases
                 </Nav.Link>
 
-                <NavDropdown title="Category Products" id="collasible-nav-dropdown" className={`${categoryOff ? '' : 'categoriesoff'}`} >
+                <NavDropdown title="Product Categories" id="collasible-nav-dropdown" className={`${categoryOff ? '' : 'categoriesoff'}`} >
                   {categories.map(categorie => (
                     <NavDropdown.Item key={categorie.id} as={Link} to="#" onClick={() => dispatch(filterProductCategory(categorie.id))}>
                     {categorie.name}
