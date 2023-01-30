@@ -1,69 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsThunk } from "../store/slices/poducts.slice";
+import { filterProductCategory, filterProductSearch, getProductsThunk } from "../store/slices/poducts.slice";
 //import '../css/styles.css'
-import '../css/styles-prueba.css'
+import "../css/styles-prueba.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { setCategoryOff } from "../store/slices/categoryOff";
 
 const Home = () => {
   
   const products = useSelector((state) => state.products);
 
+  const opacity = useSelector((state) => state.opacity)
+
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState([]);
-
-  //console.log(products);
-  console.log(categories)
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProductsThunk())
-    axios.get('https://e-commerce-api-v2.academlo.tech/api/v1/categories')
-    .then((res) => setCategories(res.data))
-  }, []);
+  const [productsSearch, setProductsSearch] = useState('');
 
   
+  useEffect(() => {
+    dispatch(getProductsThunk());
+    dispatch(setCategoryOff(true))  
+  }, []);
+  
+  //console.log(products);
+  //console.log(categories);
+
+  const dispatch = useDispatch();
+
   return (
-   <div className="content">
-      
-   <section className="main-container">
-     <div className="search-box">
-        <form action="" className="input">
-          <input type="text" placeholder="What are you looking for?"/>
-          <button>
-            <i class='bx bx-search'></i>
-          </button>
-          
-        </form>
-        
-     </div>
+    <div className="content">
+      <section className={`main-container ${opacity}`}>
+        <div className="search-box">
+          <form action="" className="input">
+            <input value={productsSearch} onChange={(e) => setProductsSearch(e.target.value)} type="text" placeholder="What are you looking for?" />
+            <button onClick={() => dispatch(filterProductSearch(productsSearch))}>
+              <i className="bx bx-search"></i>
+            </button>
+          </form>
+        </div>
         <ul className="product-list">
-          {products.map(product => (
-            <li>
+          {products.map((product) => (
+            <li key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
               <div className="product-card">
                 <button className="cart-button">
-                  <i class='bx bx-cart'></i>
+                  <i className="bx bx-cart"></i>
                 </button>
                 <div className="image">
                   <img className="over" src={product.images[0].url} alt="" />
-                  
                 </div>
                 <div className="info">
-                <span className="brand">{product.brand}</span>
-                <strong>{product.title}</strong>
-                <span className="price">{product.price}</span>
+                  <span className="brand">{product.brand}</span>
+                  <strong>{product.title}</strong>
+                  <span className="price">{product.price}</span>
+                </div>
               </div>
-              </div>
-              
             </li>
           ))}
-       </ul>
-    </section> 
-   </div>   
+        </ul>
+      </section>
+    </div>
   );
 };
 

@@ -27,6 +27,14 @@ export const filterProductCategory = (id) => (dispatch) => {
         .finally(() => dispatch(setIsLoading(false)));
 }
 
+export const filterProductSearch = (productsSearch) => (dispatch) => {
+    dispatch(setIsLoading(true));
+    return axios.get(`https://e-commerce-api-v2.academlo.tech/api/v1/products?title=${productsSearch}`)
+        .then((res) => dispatch(setProducts(res.data)))
+        .finally(() => dispatch(setIsLoading(false)));
+}
+
+
 export const { setProducts } = productsSlice.actions;
 
 export default productsSlice.reducer;
