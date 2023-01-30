@@ -43,10 +43,15 @@ function AppNavBar() {
     }
   };
 
+  const closeCar= () => {
+    setCarOn(false)
+    dispatch(setOpacity(''))
+  }
+
   return (
     <div className="navbar">
       <div className="fixed">
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
           <Container>
             <Navbar.Brand as={Link} to="/">
               <h2>e-comerce</h2>
@@ -83,9 +88,11 @@ function AppNavBar() {
         <div className={`cart-modal ${carOn ? "open" : ""}`}>
           <div className="cart">
             <div className="minimalist-scrollbar">
-              <i className='bx bx-x bx-sm' onClick={openCar}></i>
-              <h5>Carrito de Compra</h5>
-              
+              <i className='bx bx-x bx-sm' onClick={closeCar}></i>
+              <h5>Shopping Cart</h5>
+              <div className="close-button-cart">
+                <button onClick={closeCar}>Close</button>
+              </div>
             </div>
           </div>
         </div>

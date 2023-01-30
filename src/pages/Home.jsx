@@ -35,7 +35,7 @@ const Home = () => {
         <div className="search-box">
           <form action="" className="input">
             <input value={productsSearch} onChange={(e) => setProductsSearch(e.target.value)} type="text" placeholder="What are you looking for?" />
-            <button onClick={() => dispatch(filterProductSearch(productsSearch))}>
+            <button  onClick={() => dispatch(filterProductSearch(productsSearch))}>
               <i className="bx bx-search"></i>
             </button>
           </form>
