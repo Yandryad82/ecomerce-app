@@ -10,6 +10,8 @@ const ProductDetails = () => {
 
   const [productSelect, setProductSelect] = useState({});
 
+  const opacity = useSelector((state) => state.opacity)
+  
   const productssuggested = useSelector((state) => state.products);
 
   const productsFilter = productssuggested.filter(
@@ -35,7 +37,7 @@ const ProductDetails = () => {
   return (
     <div>
       <div className="content">
-        <section className="product-detail main-container">
+        <section className={`product-detail main-container ${opacity}`}>
           <div className="history">
             <h2>{productSelect.title}</h2>
           </div>
