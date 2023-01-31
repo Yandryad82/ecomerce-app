@@ -116,7 +116,7 @@ function AppNavBar() {
                 >
                   Login
                 </Nav.Link>
-                <NavDropdown title="Mi Cuenta" id="collasible-nav-dropdown">
+                <NavDropdown title="My Account" id="collasible-nav-dropdown">
                   <NavDropdown.Item>
                     <span onClick={goLogin}>
                       <i className="bx bxs-user bx-sm"></i>{" "}
