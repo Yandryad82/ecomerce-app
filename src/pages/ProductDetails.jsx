@@ -32,7 +32,6 @@ const ProductDetails = () => {
         dispatch(filterProductCategory(res.data.categoryId));
       });
   }, [id]);
-
   
   return (
     <div>
