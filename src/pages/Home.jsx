@@ -7,6 +7,7 @@ import "../css/styles-prueba.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setCategoryOff } from "../store/slices/categoryOff";
+import { getProductsCarthunk } from "../store/slices/productsCar.slice";
 
 const Home = () => {
   
@@ -22,6 +23,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(getProductsThunk());
     dispatch(setCategoryOff(true))  
+    
   }, []);
   
   //console.log(products);

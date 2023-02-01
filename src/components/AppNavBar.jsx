@@ -15,6 +15,7 @@ import {
 import "../css/styles-prueba.css";
 import { setCategoryOff } from "../store/slices/categoryOff";
 import { setOpacity } from "../store/slices/isOpacity";
+import { getProductsCarthunk } from "../store/slices/productsCar.slice";
 
 function AppNavBar() {
   const [carOn, setCarOn] = useState(false);
@@ -24,8 +25,12 @@ function AppNavBar() {
   const [categories, setCategories] = useState([]);
 
   const categoryOff = useSelector((state) => state.categoryOff);
+
+  const productsCar = useSelector((state) => state.productsCar)
   
   const navigate = useNavigate();
+
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     axios
@@ -33,15 +38,24 @@ function AppNavBar() {
       .then((res) => {
         setCategories(res.data);
       });
+      
   }, []);
 
+  console.log(productsCar)
+  
   const openCar = () => {
+    if(token) {
+      dispatch(getProductsCarthunk());
     setCarOn(!carOn);
     if (carOn == false) {
       dispatch(setOpacity("carON"));
     } else {
       dispatch(setOpacity(""));
     }
+    }else{
+      navigate('/login')
+    }
+    
   };
 
   const closeCar = () => {
@@ -57,6 +71,7 @@ function AppNavBar() {
     localStorage.setItem("create", "");
     localStorage.setItem("update", "");
     navigate("/login");
+    
   };
 
   const goLogin = () => {
@@ -123,27 +138,27 @@ function AppNavBar() {
                       {localStorage.getItem("token") ? "" : "Sing In"}{" "}
                     </span>
                   </NavDropdown.Item>
-                  <ul>
+                  <ul className="container-info-login">
                     {localStorage.getItem("token") ? (
                       <li>
-                        <NavDropdown.Item>
+                        <NavDropdown.Item className="log-info">
                           <span><strong>Name:</strong>
                             {" "}
                             {localStorage.getItem("user")}{" "}
                             {localStorage.getItem("lastName")}
                           </span>
                         </NavDropdown.Item>
-                        <NavDropdown.Item>
+                        <NavDropdown.Item className="log-info">
                           <span><strong>Email:</strong> {localStorage.getItem("email")}</span>
                         </NavDropdown.Item>
-                        <NavDropdown.Item>
+                        <NavDropdown.Item className="log-info">
                           <span><strong>Create:</strong> {localStorage.getItem("create")}</span>
                         </NavDropdown.Item>
-                        <NavDropdown.Item>
+                        <NavDropdown.Item className="log-info">
                           <span><strong>Last Login:</strong> {localStorage.getItem("update")}</span>
                         </NavDropdown.Item>
-                        <NavDropdown.Item onClick={logout}>
-                        <strong>{localStorage.getItem("token") ? "Logout" : ""}</strong>
+                        <NavDropdown.Item onClick={logout} className="log-info">
+                        <strong><span>{localStorage.getItem("token") ? "Logout" : ""}</span></strong>
                         </NavDropdown.Item>
                       </li>
                     ) : (
@@ -168,7 +183,20 @@ function AppNavBar() {
             <div className="minimalist-scrollbar">
               <i className="bx bx-x bx-sm" onClick={closeCar}></i>
               <h5>Shopping Cart</h5>
+              <ul>
+                  {productsCar.map(productCar => (
+                    <li key={productCar.id}>
+                      <div>
+                        <img src={productCar.product.images?.[0].url} alt="" style={{width:50}} />
+                        <span>{productCar.product.title}</span>
+                        <span>{productCar.quantity}</span>
+                        <span>{productCar.product.price}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               <div className="close-button-cart">
+                
                 <button onClick={closeCar}>Close</button>
               </div>
             </div>

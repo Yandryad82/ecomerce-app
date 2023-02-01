@@ -4,6 +4,7 @@ import  isLoadingSlice  from './slices/isLoading'
 import  isOpacitySlice from './slices/isOpacity'
 import  loginSlice  from './slices/login.slice'
 import  productsSlice  from './slices/poducts.slice'
+import  productsCarSlice  from './slices/productsCar.slice'
 import  puchasesSlice  from './slices/puchases.slice'
 import  userNameSlaice  from './slices/userName.slaice'
 
@@ -13,6 +14,7 @@ export default configureStore({
         products: productsSlice,
         categoryOff: categoryOffSlice,
         opacity: isOpacitySlice,
-        puchases: puchasesSlice
+        puchases: puchasesSlice,
+        productsCar: productsCarSlice
     }
 })
