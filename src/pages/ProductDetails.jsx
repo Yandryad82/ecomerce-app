@@ -10,6 +10,8 @@ const ProductDetails = () => {
 
   const [productSelect, setProductSelect] = useState({});
 
+  const [imgInit, setImgInit] = useState(0);
+
   const opacity = useSelector((state) => state.opacity)
   
   const productssuggested = useSelector((state) => state.products);
@@ -38,7 +40,7 @@ const ProductDetails = () => {
       <div className="content">
         <section className={`product-detail main-container ${opacity}`}>
           <div className="history">
-            <h2>{productSelect.title}</h2>
+            
           </div>
           <div className="product-info-flex">
             <div className="col">
@@ -51,17 +53,19 @@ const ProductDetails = () => {
                    
                   </div>
                 </div>
-                 <img src={productSelect.images?.[0].url} alt="" />
+                 <div className="image-selected">
+                   <img  src={productSelect.images?.[imgInit].url} alt="" />
+                 </div>
                 <ul className="images-preview">
                   
                   <li className="selected">
-                    <img src={productSelect.images?.[0].url} alt="" />            
+                    <img src={productSelect.images?.[0].url} alt="" onClick={() => setImgInit(0)} />            
                   </li>
                   <li>
-                    <img src={productSelect.images?.[1].url} alt="" />            
+                    <img src={productSelect.images?.[1].url} alt="" onClick={() => setImgInit(1)}/>            
                   </li>
                   <li>
-                    <img src={productSelect.images?.[2].url} alt="" />            
+                    <img src={productSelect.images?.[2].url} alt="" onClick={() => setImgInit(2)}/>            
                   </li>
                 </ul>
               </div>

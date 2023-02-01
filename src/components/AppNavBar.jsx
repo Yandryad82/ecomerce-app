@@ -183,15 +183,40 @@ function AppNavBar() {
             <div className="minimalist-scrollbar">
               <i className="bx bx-x bx-sm" onClick={closeCar}></i>
               <h5>Shopping Cart</h5>
-              <ul>
+              <ul className="cart-products-list">
                   {productsCar.map(productCar => (
                     <li key={productCar.id}>
-                      <div>
+                      <div className="product-info">
                         <img src={productCar.product.images?.[0].url} alt="" style={{width:50}} />
-                        <span>{productCar.product.title}</span>
-                        <span>{productCar.quantity}</span>
-                        <span>{productCar.product.price}</span>
+                        <div className="details">
+                          <span className="brand">
+                            <a className="name" href="">{productCar.product.title}</a>
+                          </span>
+                          <div className="quantity-box">
+                            <div className="flex">
+                              <button>
+                                 -
+                              </button>
+                              <div className="value">1</div>
+                              <button>
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                          <div className="button-delete">
+                            <button className='bx bx-trash'>
+                               
+                            </button>
+                          </div>
                       </div>
+                      <div className="total">
+                        <span className="label">Total: </span>
+                        <strong><b>
+                          $ 850
+                        </b></strong>
+                      </div>  
+                      
                     </li>
                   ))}
                 </ul>
