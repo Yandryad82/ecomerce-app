@@ -22,7 +22,7 @@ const Purchases = () => {
     <div className="content">
       <section className={`main-container purchases ${opacity}`}>
         <div className="history">
-          <a href="/">Home</a>
+          <a href="#/">Home</a>
           <div className="separator"></div>
           <b>Purchases</b>
         </div>

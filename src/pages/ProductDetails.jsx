@@ -58,13 +58,13 @@ const ProductDetails = () => {
                  </div>
                 <ul className="images-preview">
                   
-                  <li className="selected">
+                  <li className={`${imgInit===0 ? 'selected' : ''}`}>
                     <img src={productSelect.images?.[0].url} alt="" onClick={() => setImgInit(0)} />            
                   </li>
-                  <li>
+                  <li className={`${imgInit===1 ? 'selected' : ''}`}>
                     <img src={productSelect.images?.[1].url} alt="" onClick={() => setImgInit(1)}/>            
                   </li>
-                  <li>
+                  <li className={`${imgInit===2 ? 'selected' : ''}`}>
                     <img src={productSelect.images?.[2].url} alt="" onClick={() => setImgInit(2)}/>            
                   </li>
                 </ul>
