@@ -11,9 +11,7 @@ const Purchases = () => {
     useEffect(() => {
         dispatch(getPuchasesThunk())
     }, [])
-    
-    console.log(puchases)
-
+        
     return (
         <div>
             <h1>Compras</h1>
