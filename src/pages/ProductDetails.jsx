@@ -3,19 +3,26 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { setCategoryOff } from "../store/slices/categoryOff";
-import { filterProductCategory } from "../store/slices/poducts.slice";
+import { setQuantity } from "../store/slices/IsCounterQuantity.slice";
+import { addCarthunk, filterProductCategory, updateCarQuantityThunk } from "../store/slices/poducts.slice";
+import { setTotalCar } from "../store/slices/totalValueCar.slice";
 
 const ProductDetails = () => {
+  
   const { id } = useParams();
 
   const [productSelect, setProductSelect] = useState({});
-
+    
   const [imgInit, setImgInit] = useState(0);
 
-  const opacity = useSelector((state) => state.opacity)
+  const opacity = useSelector((state) => state.opacity);
   
   const productssuggested = useSelector((state) => state.products);
 
+  const quantity = useSelector((state) => state.quantity);
+
+  const totalCar = useSelector((state => state.totalCar))
+  
   const productsFilter = productssuggested.filter(
     (products) => products.id !== Number(id)
   );
@@ -26,6 +33,18 @@ const ProductDetails = () => {
 
   dispatch(setCategoryOff(false));
 
+  
+  const addProductCar = (id) => {
+    const toCar = {
+        productId:productSelect.id,
+        quantity: quantity
+    }
+    console.log(toCar)
+    dispatch(addCarthunk(toCar))
+    
+  }
+
+  
   useEffect(() => {
     axios
       .get(`https://e-commerce-api-v2.academlo.tech/api/v1/products/${id}`)
@@ -87,13 +106,13 @@ const ProductDetails = () => {
                       <div className="quantity-box">
                         <div className="lable">Quantity</div>
                         <div className="flex">
-                          <button><i className="icon-minus"> </i></button>
-                          <div className="value">1</div>
-                          <button><i className="icon-plus"></i></button>
+                          <button  onClick={() => dispatch(setQuantity(quantity-1))} ><i className="icon-minus"> </i>-</button>
+                          <div className="value">{quantity}</div>
+                          <button  onClick={() => dispatch(setQuantity(quantity+1))} ><i className="icon-plus"></i>+</button>
                         </div>
                       </div>
                     </div>
-                    <button className="add-cart-button">
+                    <button onClick={addProductCar} className="add-cart-button" >
                       Add to cart
                       <i className="bx bx-cart bx-sm car-icon icon-shopping-cart" ></i>
                       </button>

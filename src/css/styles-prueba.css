@@ -176,7 +176,47 @@ section {
     
 }
 
+.purchases {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+   
+}
 
+.purchases .purchase-products-list .product-item .quantity .box {
+    border: 1px solid var(--light-gray);
+    margin: 0 auto;
+    max-width: 65px;
+    text-align: center;
+}
+
+.purchases .purchase-products-list .product-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.product-item {
+    
+    gap: 3rem;
+    align-items: center;
+}
+
+.main-container.purchases{
+    margin-top: 2rem;
+    
+}
+
+.image-purchase {
+    width: 200px;
+}
+
+.purchases .purchase-products-list .product-item .image img {
+    height: 100%;
+    object-fit: contain;
+}
 
 .cart .cart-products-list li .total {
     text-align: right;
@@ -187,15 +227,28 @@ section {
     padding: 0 10px;
 }
 
+.purchases .purchase-products-list .product-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.purchases .purchase-products-list .product-item .date {
+    display: none;
+}
+
 .cart .cart-products-list li .product-info .details .brand {
     color: var(--gray);
     font-size: .8rem;
     margin-bottom: 2px;
 }
 
-.cart .cart-products-list li .product-info .details a, .cart .cart-products-list li .product-info .details span {
-    display: block;
-    text-decoration: none;
+.product-item img {
+    width: 50%;
+    margin: 20px;
+   
 }
 
 .cart .cart-products-list li .product-info .details a, .cart .cart-products-list li .product-info .details span {
@@ -362,6 +415,37 @@ input {
     margin: 0 auto;
     object-fit: contain;
     width: 80%;
+    
+}
+
+.cart h5 {
+    padding: 0 20px;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    
+}
+
+.cart .checkout-section .buy-button {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cart .checkout-section .total .label {
+    color: var(--light-gray);
+}
+
+.cart .checkout-section .total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin: 10px;
+}
+
+.cart .checkout-section .total b {
+    font-size: 1.1rem;
     
 }
 
@@ -817,6 +901,10 @@ img {
 .image-selected {
     margin-top: 50px;
     height: 300px;
+}
+
+.product-item {
+    display: flex;
 }
 
 }  

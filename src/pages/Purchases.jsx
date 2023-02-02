@@ -26,13 +26,26 @@ const Purchases = () => {
           <div className="separator"></div>
           <b>Purchases</b>
         </div>
-        <h1>My Purchases</h1>
+        
         <ul className="purchases-products-list">
           {puchases.map(purchase => (
             <li className="product-item">
-              <div className="image">
+              <div className="image-purchase">
                 <img src={purchase.product.images?.[0].url} alt="" />
               </div>
+                <div className="name">{purchase.product.title}
+              </div>
+                <div className="date">{purchase.product.updatedAt}
+              </div>
+              <div className="quantity">
+                <div className="box">
+                  {purchase.quantity}
+                </div>
+                
+              </div>
+              <div className="price">
+                  {purchase.product.price}
+                </div>
             </li>
           ))}
         </ul>

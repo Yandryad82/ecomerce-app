@@ -9,13 +9,22 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  addCarthunk,
   filterProductCategory,
   getProductsThunk,
+  updateCarQuantityThunk,
 } from "../store/slices/poducts.slice";
 import "../css/styles-prueba.css";
 import { setCategoryOff } from "../store/slices/categoryOff";
 import { setOpacity } from "../store/slices/isOpacity";
 import { getProductsCarthunk } from "../store/slices/productsCar.slice";
+import {
+  puchasesSlice,
+  purchasesCartThunk,
+} from "../store/slices/puchases.slice";
+import { setQuantity } from "../store/slices/IsCounterQuantity.slice";
+import { setTotalCar } from "../store/slices/totalValueCar.slice";
+import getConfig from "../utils/getConfig";
 
 function AppNavBar() {
   const [carOn, setCarOn] = useState(false);
@@ -26,36 +35,58 @@ function AppNavBar() {
 
   const categoryOff = useSelector((state) => state.categoryOff);
 
-  const productsCar = useSelector((state) => state.productsCar)
-  
+  const productsCar = useSelector((state) => state.productsCar);
+
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
+
+  const [totalCar, setTotalCar] = useState({}) 
+
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     axios
       .get("https://e-commerce-api-v2.academlo.tech/api/v1/categories")
       .then((res) => {
-        setCategories(res.data);
+        setCategories(res.data)
+        
       });
-      
   }, []);
+  
+  
+  useEffect(() => {
+    axios
+      .get("https://e-commerce-api-v2.academlo.tech/api/v1/cart", getConfig())
+      .then((res) => {
+        setTotalCar(res.data)
+        
+      });
+  }, [totalCar]);
 
-  console.log(productsCar)
+  const showTotalCar = () => {
+  
+    let arrayPriceTotal = [];
+  for(let i=0; i < totalCar.length; i++){
+    arrayPriceTotal.push((totalCar[i].product.price)*totalCar[i].quantity)
+  }
+    setTotal(arrayPriceTotal.reduce((a, b) => a+b, 0))
+  }
+     
   
   const openCar = () => {
-    if(token) {
+    if (token) {
       dispatch(getProductsCarthunk());
-    setCarOn(!carOn);
-    if (carOn == false) {
-      dispatch(setOpacity("carON"));
+      showTotalCar()
+      setCarOn(!carOn);
+      if (carOn == false) {
+        dispatch(setOpacity("carON"));
+      } else {
+        dispatch(setOpacity(""));
+      }
     } else {
-      dispatch(setOpacity(""));
+      navigate("/login");
     }
-    }else{
-      navigate('/login')
-    }
-    
   };
 
   const closeCar = () => {
@@ -71,11 +102,15 @@ function AppNavBar() {
     localStorage.setItem("create", "");
     localStorage.setItem("update", "");
     navigate("/login");
-    
   };
 
   const goLogin = () => {
     navigate("/login");
+  };
+
+  const checkout = () => {
+    dispatch(purchasesCartThunk());
+    dispatch(getProductsCarthunk());
   };
 
   return (
@@ -113,7 +148,7 @@ function AppNavBar() {
                 </NavDropdown>
               </Nav>
               <Nav>
-              <Nav.Link
+                <Nav.Link
                   as={Link}
                   to="/login"
                   className={`${
@@ -142,23 +177,36 @@ function AppNavBar() {
                     {localStorage.getItem("token") ? (
                       <li>
                         <NavDropdown.Item className="log-info">
-                          <span><strong>Name:</strong>
-                            {" "}
+                          <span>
+                            <strong>Name:</strong>{" "}
                             {localStorage.getItem("user")}{" "}
                             {localStorage.getItem("lastName")}
                           </span>
                         </NavDropdown.Item>
                         <NavDropdown.Item className="log-info">
-                          <span><strong>Email:</strong> {localStorage.getItem("email")}</span>
+                          <span>
+                            <strong>Email:</strong>{" "}
+                            {localStorage.getItem("email")}
+                          </span>
                         </NavDropdown.Item>
                         <NavDropdown.Item className="log-info">
-                          <span><strong>Create:</strong> {localStorage.getItem("create")}</span>
+                          <span>
+                            <strong>Create:</strong>{" "}
+                            {localStorage.getItem("create")}
+                          </span>
                         </NavDropdown.Item>
                         <NavDropdown.Item className="log-info">
-                          <span><strong>Last Login:</strong> {localStorage.getItem("update")}</span>
+                          <span>
+                            <strong>Last Login:</strong>{" "}
+                            {localStorage.getItem("update")}
+                          </span>
                         </NavDropdown.Item>
                         <NavDropdown.Item onClick={logout} className="log-info">
-                        <strong><span>{localStorage.getItem("token") ? "Logout" : ""}</span></strong>
+                          <strong>
+                            <span>
+                              {localStorage.getItem("token") ? "Logout" : ""}
+                            </span>
+                          </strong>
                         </NavDropdown.Item>
                       </li>
                     ) : (
@@ -184,46 +232,53 @@ function AppNavBar() {
               <i className="bx bx-x bx-sm" onClick={closeCar}></i>
               <h5>Shopping Cart</h5>
               <ul className="cart-products-list">
-                  {productsCar.map(productCar => (
-                    <li key={productCar.id}>
-                      <div className="product-info">
-                        <img src={productCar.product.images?.[0].url} alt="" style={{width:50}} />
-                        <div className="details">
-                          <span className="brand">
-                            <a className="name" href="">{productCar.product.title}</a>
-                          </span>
-                          <div className="quantity-box">
-                            <div className="flex">
-                              <button>
-                                 -
-                              </button>
-                              <div className="value">1</div>
-                              <button>
-                                +
-                              </button>
+                {productsCar.map((productCar) => (
+                  <li key={productCar.id}>
+                    <div className="product-info">
+                      <img
+                        src={productCar.product.images?.[0].url}
+                        alt=""
+                        style={{ width: 50 }}
+                      />
+                      <div className="details">
+                        <span className="brand">
+                          <a className="name" href="">
+                            {productCar.product.title}
+                          </a>
+                        </span>
+                        <div className="quantity-box">
+                          <div className="flex">
+                            <div className="value">
+                              <span>{productCar?.quantity}</span>
                             </div>
                           </div>
                         </div>
-                          <div className="button-delete">
-                            <button className='bx bx-trash'>
-                               
-                            </button>
-                          </div>
                       </div>
-                      <div className="total">
-                        <span className="label">Total: </span>
-                        <strong><b>
-                          $ 850
-                        </b></strong>
-                      </div>  
-                      
-                    </li>
-                  ))}
-                </ul>
-              <div className="close-button-cart">
-                
-                <button onClick={closeCar}>Close</button>
+                      <div className="button-delete">
+                        <button className="bx bx-trash"></button>
+                      </div>
+                    </div>
+                    <div className="total">
+                      <span className="label">Total: </span>
+                      <strong>
+                        <b>
+                          $ {productCar.product.price * productCar.quantity}
+                        </b>
+                      </strong>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="checkout-section">
+              <div className="total">
+                <span className="total">Total:</span>
+                <b>$ {total}</b>
               </div>
+
+              <button onClick={checkout} className="buy-button">
+                Checkout
+              </button>
             </div>
           </div>
         </div>
