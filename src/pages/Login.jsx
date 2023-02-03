@@ -32,7 +32,14 @@ const Login = () => {
 
   return (
     <div className="container-login-general">
-            
+            <div className="GuidUsers">
+              <h6><b>Test data</b> </h6>
+              <ul>
+                <li><i class="fa-regular fa-envelope"></i> mason@gmail.com</li>
+                <li><i class="fa-solid fa-lock-open"></i> mason1234</li>
+              </ul>      
+              
+            </div>
       <Form onSubmit={handleSubmit(submit)} className="login-container">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
